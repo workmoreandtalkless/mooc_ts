@@ -1,11 +1,11 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, Component} from 'react';
 import logo from './assets/images/logo.svg';
 import styles from './App.module.css';
 import robots from './mockdata/robots.json'
 import Robot from "./components/Robot";
 import ShoppingCart from "./components/ShoppingCart";
 import { idText } from 'typescript';
-
+import RobotDiscount from "./components/RobotDiscount";
 
 interface Props {
 
@@ -54,8 +54,7 @@ const App : React.FC =(props) =>{
       <button onClick={()=>{
         console.log("upcount:" , count);
         setCount(count+1);
-        console.log("count:" , count);
-        setCount(count+1);
+        console.log("upcount:" , count);
       }}
         >Click</button>
         <span>count:{count}</span>
@@ -66,15 +65,17 @@ const App : React.FC =(props) =>{
         }
         { !loading ? (
           <div className={styles.robotList}>
-      {robotGallery.map(
-      (r) =><Robot id={r.id} name={r.name} email ={r.name}/>)}
-  
-      </div>
+          {robotGallery.map(
+          (r,index) =>
+          index%2 == 0?(
+            <RobotDiscount id={r.id} name={r.name} email ={r.name}/>
+          ):(
+            <Robot id={r.id} name={r.name} email ={r.name}/>)
+          )}
+          </div>
         ):(
           <h2>loading</h2>
-        )
-          
-        }
+        )}
       </div>
 
       

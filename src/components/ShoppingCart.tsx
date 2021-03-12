@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "./ShoppingCart.module.css";
 import { FiShoppingCart } from "react-icons/fi";
-
+import {appContext} from "../AppState";
 interface Props{}
 
 interface State{
@@ -26,26 +26,34 @@ class ShoppingCart extends React.Component<Props,State>{
     }
     render(){
         return (
-            <div className={styles.cartContainer}>
-                <button
-                className={styles.button}
-                onClick={this.handleClick}
-                >
-                <FiShoppingCart />
-                <span> Stocks </span>
-                </button>
-                
-                <div
-                className={styles.cartDropDown}
-                style={{
-                    display:this.state.isOpen?"block":"none",
-                }}>
-                    <ul>
-                        <li>stock 1</li>
-                        <li>stock 2</li>
-                    </ul>
-                </div>
-            </div>
+            <appContext.Consumer>
+                {(value)=>{//箭头函数的参数就是上下文关系对象context的value
+                    return (
+                        <div className={styles.cartContainer}>
+                        <button
+                        className={styles.button}
+                        onClick={this.handleClick}
+                        >
+                        <FiShoppingCart />
+                        <span> cart {value.shoppingCart.items.length}</span>
+                        </button>
+                        
+                        <div
+                        className={styles.cartDropDown}
+                        style={{
+                            display:this.state.isOpen?"block":"none",
+                        }}>
+                            <ul>
+                                {value.shoppingCart.items.map((i)=>(
+                                    <li>{i.name}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                    )
+                }}
+            </appContext.Consumer>
+            
         );
     }
 }
